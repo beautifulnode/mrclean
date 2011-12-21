@@ -1,5 +1,7 @@
-Mr Clean
+Mr Clean 0.0.1
 ========
+
+![MrClean](http://upload.wikimedia.org/wikipedia/en/thumb/7/73/Mr._Clean_logo.png/220px-Mr._Clean_logo.png)
 
 It's a HTML Sanitizer!
 It's a genie!
