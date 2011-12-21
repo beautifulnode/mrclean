@@ -5,7 +5,7 @@
 // A Genie who will make your markup clean!
 //
 module.exports = (function() {
-  var scum = "html head body script style link".split(' ')
+  var scum = "html head body script style link object div span table".split(' ')
   
   // does the actual cleaning
   var scrub = function(text) {
@@ -23,6 +23,8 @@ module.exports = (function() {
     clean: function(text, callback) {
       var _cleantext;
       _cleantext = scrub(text);
+      // no style for you!
+      _cleantext = _cleantext.replace(/style/, 'data.badfood');
       callback(null, _cleantext);
       return true;
     }
