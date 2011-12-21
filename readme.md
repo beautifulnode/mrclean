@@ -12,7 +12,7 @@ It's fabulous!
 npm install mrclean
 ```
 
-## Usage
+## Usage in NodeJs
 
 ``` javascript
 mrclean = require('mrclean');
@@ -22,6 +22,24 @@ mrclean.clean(dirtyHtml, function(err, cleanHtml) {
   // All Clean!
   console.log(cleanHtml);
 });
+
+```
+
+## Usage in the Browser
+
+First add mrclean.js to your html page.
+
+``` javascript
+<script type="text/javascript">
+$(document).ready(function() {
+  $('button').click(function() {
+    MrClean.clean($('textarea').val(), function(err, cleanText) {
+      console.log(cleanText);
+    });
+  });
+});
+
+</script>
 
 ```
 
