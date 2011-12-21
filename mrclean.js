@@ -331,10 +331,10 @@ require.define("/index.js", function (require, module, exports, __dirname, __fil
 // A Genie who will make your markup clean!
 //
 module.exports = (function() {
-  scum = "html head body script style link".split(' ')
+  var scum = "html head body script style link".split(' ')
   
   // does the actual cleaning
-  scrub = function(text) {
+  var scrub = function(text) {
     var _i, _len, _s, _exp;
     for(_i = 0, _len = scum.length; _i < _len; _i++) {
       _s = scum[_i];
