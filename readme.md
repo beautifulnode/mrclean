@@ -3,6 +3,8 @@ Mr Clean 0.0.1
 
 ![MrClean](http://upload.wikimedia.org/wikipedia/en/thumb/7/73/Mr._Clean_logo.png/220px-Mr._Clean_logo.png)
 
+![Build Status](https://secure.travis-ci.org/beautifulnode/mrclean.png)](http://travis-ci.org/beautifulnode/mrclean)
+
 It's a HTML Sanitizer!
 It's a genie!
 
