@@ -43,7 +43,18 @@ $(document).ready(function() {
 
 ```
 
+## Build Script to browserify node module
 
+```
+npm install browserify -g
+browserify browser.js -o mrclean.js
+```
+
+## Run Tests
+
+```
+npm test
+```
 ## Contributing
 
 Contributors are welcome, please create issues and submit pull requests in feature branches!
