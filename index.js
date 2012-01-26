@@ -1,32 +1,36 @@
 // # Mr Clean
 //
-// Disclaimer: This is a work in progress....
-// 
 // A Genie who will make your markup clean!
 //
-module.exports = (function() {
-  var scum = "html head body script style link object div span table".split(' ')
+module.exports = function (scum) {
+  var defaultScum = "html head body script style link object div span table".split(' ');
+  return new MrClean(scum || defaultScum);
+};
+
+function MrClean(scum) {
+  this.scum = scum;
+}
+
+var soap = function(tag, text) {
+  var exp = new RegExp("<" + tag + "[^>]*?>.*?<\/" + tag + ">", "gi");
+  return text.replace(exp, '');
+};
+
+var scrub = function(scum, text) {
+ var i, len;
+ for(i = 0, len = scum.length; i < len; i++) {
+   text = soap(scum[i], text);
+ }
+ return text;
+};
+
+MrClean.prototype.clean = function(text, callback) {
+  var self = this;
+  var cleantext;
   
-  // does the actual cleaning
-  var scrub = function(text) {
-    var _i, _len, _s, _exp;
-    for(_i = 0, _len = scum.length; _i < _len; _i++) {
-      _s = scum[_i];
-      _exp = new RegExp("<" + _s + "[^>]*?>.*?<\/" + _s + ">", "gi")
-      text = text.replace(_exp, '');
-      
-    }
-    return text;
-  }
-  
-  return {
-    clean: function(text, callback) {
-      var _cleantext;
-      _cleantext = scrub(text);
-      // no style for you!
-      _cleantext = _cleantext.replace(/style/, 'data.badfood');
-      callback(null, _cleantext);
-      return true;
-    }
-  }
-})();
+  cleantext = scrub(self.scum, text);
+  // no style for you!
+  cleantext = cleantext.replace(/style/, 'data.badfood');
+  callback(null, cleantext);
+  return true;
+};

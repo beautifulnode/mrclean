@@ -7,24 +7,25 @@ var require = function (file, cwd) {
     var res = mod._cached ? mod._cached : mod();
     return res;
 }
+var __require = require;
 
 require.paths = [];
 require.modules = {};
 require.extensions = [".js",".coffee"];
 
-require._core = {
-    'assert': true,
-    'events': true,
-    'fs': true,
-    'path': true,
-    'vm': true
-};
-
 require.resolve = (function () {
+    var core = {
+        'assert': true,
+        'events': true,
+        'fs': true,
+        'path': true,
+        'vm': true
+    };
+    
     return function (x, cwd) {
         if (!cwd) cwd = '/';
         
-        if (require._core[x]) return x;
+        if (core[x]) return x;
         var path = require.modules.path();
         var y = cwd || '.';
         
@@ -129,37 +130,6 @@ require.alias = function (from, to) {
     }
 };
 
-require.define = function (filename, fn) {
-    var dirname = require._core[filename]
-        ? ''
-        : require.modules.path().dirname(filename)
-    ;
-    
-    var require_ = function (file) {
-        return require(file, dirname)
-    };
-    require_.resolve = function (name) {
-        return require.resolve(name, dirname);
-    };
-    require_.modules = require.modules;
-    require_.define = require.define;
-    var module_ = { exports : {} };
-    
-    require.modules[filename] = function () {
-        require.modules[filename]._cached = module_.exports;
-        fn.call(
-            module_.exports,
-            require_,
-            module_,
-            module_.exports,
-            dirname,
-            filename
-        );
-        require.modules[filename]._cached = module_.exports;
-        return module_.exports;
-    };
-};
-
 var Object_keys = Object.keys || function (obj) {
     var res = [];
     for (var key in obj) res.push(key)
@@ -181,8 +151,25 @@ if (!process.binding) process.binding = function (name) {
 
 if (!process.cwd) process.cwd = function () { return '.' };
 
-require.define("path", function (require, module, exports, __dirname, __filename) {
-    function filter (xs, fn) {
+require.modules["path"] = function () {
+    var module = { exports : {} };
+    var exports = module.exports;
+    var __dirname = ".";
+    var __filename = "path";
+    
+    var require = function (file) {
+        return __require(file, ".");
+    };
+    
+    require.resolve = function (file) {
+        return __require.resolve(name, ".");
+    };
+    
+    require.modules = __require.modules;
+    __require.modules["path"]._cached = module.exports;
+    
+    (function () {
+        function filter (xs, fn) {
     var res = [];
     for (var i = 0; i < xs.length; i++) {
         if (fn(xs[i], i, xs)) res.push(xs[i]);
@@ -316,49 +303,111 @@ exports.basename = function(path, ext) {
 exports.extname = function(path) {
   return splitPathRe.exec(path)[3] || '';
 };
+;
+    }).call(module.exports);
+    
+    __require.modules["path"]._cached = module.exports;
+    return module.exports;
+};
 
-});
+require.modules["/package.json"] = function () {
+    var module = { exports : {} };
+    var exports = module.exports;
+    var __dirname = "/";
+    var __filename = "/package.json";
+    
+    var require = function (file) {
+        return __require(file, "/");
+    };
+    
+    require.resolve = function (file) {
+        return __require.resolve(name, "/");
+    };
+    
+    require.modules = __require.modules;
+    __require.modules["/package.json"]._cached = module.exports;
+    
+    (function () {
+        module.exports = {"author":"Tom Wilson <tom@beautifulnode.com>","name":"mrclean","description":"A Simple HTML Sanitizer","version":"0.1.0","repository":{"url":"https://beautifulnode@github.com/beautifulnode/mrclean.git"},"main":"index.js","scripts":{"test":"mocha"},"engines":{"node":"~0.6.x"},"dependencies":{},"devDependencies":{"mocha":"0.10.2","should":"0.5.1","browserify":"1.9.2"}};
+    }).call(module.exports);
+    
+    __require.modules["/package.json"]._cached = module.exports;
+    return module.exports;
+};
 
-require.define("/package.json", function (require, module, exports, __dirname, __filename) {
-    module.exports = {"main":"index.js"}
-});
-
-require.define("/index.js", function (require, module, exports, __dirname, __filename) {
-    // # Mr Clean
+require.modules["/index.js"] = function () {
+    var module = { exports : {} };
+    var exports = module.exports;
+    var __dirname = "/";
+    var __filename = "/index.js";
+    
+    var require = function (file) {
+        return __require(file, "/");
+    };
+    
+    require.resolve = function (file) {
+        return __require.resolve(name, "/");
+    };
+    
+    require.modules = __require.modules;
+    __require.modules["/index.js"]._cached = module.exports;
+    
+    (function () {
+        // # Mr Clean
 //
-// Disclaimer: This is a work in progress....
-// 
 // A Genie who will make your markup clean!
 //
-module.exports = (function() {
-  var scum = "html head body script style link".split(' ')
-  
-  // does the actual cleaning
-  var scrub = function(text) {
-    var _i, _len, _s, _exp;
-    for(_i = 0, _len = scum.length; _i < _len; _i++) {
-      _s = scum[_i];
-      _exp = new RegExp("<" + _s + "[^>]*?>.*?<\/" + _s + ">", "gi")
-      text = text.replace(_exp, '');
-      
-    }
-    return text;
-  }
-  
-  return {
-    clean: function(text, callback) {
-      var _cleantext;
-      _cleantext = scrub(text);
-      callback(null, _cleantext);
-      return true;
-    }
-  }
-})();
-});
+module.exports = function (scum) {
+  var defaultScum = "html head body script style link object div span table".split(' ');
+  return new MrClean(scum || defaultScum);
+};
 
-require.define("/browser.js", function (require, module, exports, __dirname, __filename) {
+function MrClean(scum) {
+  this.scum = scum;
+}
+
+var soap = function(tag, text) {
+  var exp = new RegExp("<" + tag + "[^>]*?>.*?<\/" + tag + ">", "gi");
+  return text.replace(exp, '');
+};
+
+var scrub = function(scum, text) {
+ var i, len;
+ for(i = 0, len = scum.length; i < len; i++) {
+   text = soap(scum[i], text);
+ }
+ return text;
+};
+
+MrClean.prototype.clean = function(text, callback) {
+  var self = this;
+  var cleantext;
+  
+  cleantext = scrub(self.scum, text);
+  // no style for you!
+  cleantext = cleantext.replace(/style/, 'data.badfood');
+  callback(null, cleantext);
+  return true;
+};
+;
+    }).call(module.exports);
+    
+    __require.modules["/index.js"]._cached = module.exports;
+    return module.exports;
+};
+
+(function () {
+    var module = { exports : {} };
+    var exports = module.exports;
+    var __dirname = "/";
+    var __filename = "//Users/twilson63/code/mrclean";
+    
+    var require = function (file) {
+        return __require(file, "/");
+    };
+    require.modules = __require.modules;
+    
     window.MrClean = MrClean = require('./index');
 
-
-});
-require("/browser.js");
+;
+})();

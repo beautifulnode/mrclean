@@ -18,16 +18,32 @@ npm install mrclean
 
 ## Usage in NodeJs
 
+with default blacklist
+
 ``` javascript
 mrclean = require('mrclean');
 
 dirtyHtml = "Hi! <script src='http://www.evilsite.com/bad_script.js'></script>It's a good day!"
-mrclean.clean(dirtyHtml, function(err, cleanHtml) {
+mrclean().clean(dirtyHtml, function(err, cleanHtml) {
   // All Clean!
   console.log(cleanHtml);
 });
 
 ```
+
+with your own blacklist
+
+``` javascript
+mrclean = require('mrclean');
+
+dirtyHtml = "Hi! <script src='http://www.evilsite.com/bad_script.js'></script>It's a good day!"
+mrclean("html body link script").clean(dirtyHtml, function(err, cleanHtml) {
+  // All Clean!
+  console.log(cleanHtml);
+});
+
+```
+
 
 ## Usage in the Browser
 
@@ -37,7 +53,7 @@ First add mrclean.js to your html page.
 <script type="text/javascript">
 $(document).ready(function() {
   $('button').click(function() {
-    MrClean.clean($('textarea').val(), function(err, cleanText) {
+    MrClean().clean($('textarea').val(), function(err, cleanText) {
       console.log(cleanText);
     });
   });

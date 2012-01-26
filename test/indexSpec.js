@@ -8,27 +8,27 @@ badinnerstyle = "<p style='hello'></p>Hi! It's a good day!"
 describe('MR Clean', function() {
   describe('Sanitize Method', function() {
     it('should clean script tags', function() {
-      sanitize.clean(badscript, function(err, cleanText){
+      sanitize().clean(badscript, function(err, cleanText){
         cleanText.should.eql("Hi! It's a good day!");
       });
     });
     it('should clean style tags', function() {
-      sanitize.clean(badstyle, function(err, cleanText){
+      sanitize().clean(badstyle, function(err, cleanText){
         cleanText.should.eql("Hi! It's a good day!");
       });
     });
     it('should clean link tags', function() {
-      sanitize.clean(badlink, function(err, cleanText){
+      sanitize().clean(badlink, function(err, cleanText){
         cleanText.should.eql("Hi! It's a good day!");
       });
     });
     it('should clean html tags', function() {
-      sanitize.clean(badhtml, function(err, cleanText){
+      sanitize().clean(badhtml, function(err, cleanText){
         cleanText.should.eql("Hi! It's a good day!");
       });
     });
     it('should inner style tags', function() {
-      sanitize.clean(badinnerstyle, function(err, cleanText){
+      sanitize().clean(badinnerstyle, function(err, cleanText){
         cleanText.should.eql("<p data.badfood='hello'></p>Hi! It's a good day!");
       });
     });

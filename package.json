@@ -1,8 +1,8 @@
 {
-  "author": "Tom Wilson <tom@jackhq.com>",
+  "author": "Tom Wilson <tom@beautifulnode.com>",
   "name": "mrclean",
   "description": "A Simple HTML Sanitizer",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "repository": {
     "url": "https://beautifulnode@github.com/beautifulnode/mrclean.git"
   },
@@ -15,8 +15,8 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "mocha": "*"
-    ,"should": "*"
-    , "browserify": "*"
+    "mocha": "0.10.2"
+    ,"should": "0.5.1"
+    , "browserify": "1.9.2"
   }
 }
